@@ -31,7 +31,6 @@ This is intended for concept screening and method comparison, not as a final phy
 Because the app uses JavaScript modules, serve it from a local web server:
 
 ```powershell
-cd C:\Downloads\Rogowski-Coil-Modeler
 python -m http.server 8000
 ```
 
