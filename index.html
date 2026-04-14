@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rogowski Coil Placement Model</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Rogowski Coil Placement Research</p>
+        <h1>Geometry-first modeling for installation error</h1>
+        <p class="hero-copy">
+          Compare ideal placement to off-center, tilted, and deformed installs, then layer on
+          installation variability with Monte Carlo simulation to estimate real-world measurement error.
+        </p>
+      </div>
+      <div class="hero-card">
+        <p class="hero-card-label">Core metric</p>
+        <div class="hero-card-value" id="iqiValue">--</div>
+        <p class="hero-card-caption" id="iqiCaption">Installation Quality Index for Method B.</p>
+      </div>
+    </section>
+
+    <section class="panel grid-two">
+      <div>
+        <div class="section-title">
+          <h2>Model Settings</h2>
+          <p>Reference geometry and fitted coefficients for the fast engineering model.</p>
+        </div>
+        <div class="form-grid" id="globalControls"></div>
+      </div>
+      <div>
+        <div class="section-title">
+          <h2>Deterministic Geometry Case</h2>
+          <p>Explore one placement at a time before adding variability.</p>
+        </div>
+        <div class="form-grid" id="geometryControls"></div>
+        <div class="button-row">
+          <button id="idealizeCase" class="secondary">Reset To Ideal</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel grid-two">
+      <div>
+        <div class="section-title">
+          <h2>Geometry Result</h2>
+          <p>Single-case response for the current placement.</p>
+        </div>
+        <div class="stats-grid" id="geometrySummary"></div>
+        <div class="factor-table-wrap">
+          <table class="factor-table">
+            <thead>
+              <tr>
+                <th>Factor</th>
+                <th>Value</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="geometryFactorBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="section-title">
+          <h2>Placement View</h2>
+          <p>Top view of the loop and conductor based on the current deterministic case.</p>
+        </div>
+        <div class="visual-card">
+          <svg id="geometrySvg" viewBox="0 0 320 320" role="img" aria-label="Rogowski coil placement visualization"></svg>
+        </div>
+        <div class="note-block">
+          The visualization is intentionally simple: it highlights offset and deformation in the coil plane.
+          Tilt, skew, and neighboring conductor effects are reported numerically below.
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-title split-title">
+        <div>
+          <h2>Method Comparison</h2>
+          <p>Compare installation methods using Monte Carlo distributions.</p>
+        </div>
+        <div class="button-row">
+          <button id="presetZipTie" class="secondary">Load Zip Tie vs Clip</button>
+          <button id="runSimulation">Run Monte Carlo</button>
+        </div>
+      </div>
+
+      <div class="method-grid">
+        <article class="method-card">
+          <div class="method-header">
+            <h3>Method A</h3>
+            <input id="methodAName" type="text" value="Zip tie and hang">
+          </div>
+          <div class="form-grid" id="methodAControls"></div>
+        </article>
+
+        <article class="method-card">
+          <div class="method-header">
+            <h3>Method B</h3>
+            <input id="methodBName" type="text" value="Printed clip holder">
+          </div>
+          <div class="form-grid" id="methodBControls"></div>
+        </article>
+      </div>
+
+      <div class="section-title compact">
+        <h3>Monte Carlo Summary</h3>
+        <p>Absolute error thresholds are shown as a fraction of simulated installs.</p>
+      </div>
+      <div class="factor-table-wrap">
+        <table class="factor-table comparison-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th id="methodAHeader">Method A</th>
+              <th id="methodBHeader">Method B</th>
+            </tr>
+          </thead>
+          <tbody id="comparisonBody"></tbody>
+        </table>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Error Histogram</h3>
+            <p>Signed error distribution in percent.</p>
+          </div>
+          <canvas id="histogramCanvas" width="640" height="320"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Exceedance Curve</h3>
+            <p>Probability that absolute error stays below a threshold.</p>
+          </div>
+          <canvas id="cdfCanvas" width="640" height="320"></canvas>
+        </div>
+      </div>
+
+      <div class="note-block">
+        This app uses a tunable engineering model:
+        <code>I_meas = I_true · F_offset · F_tilt · F_shape · F_skew · F_neighbors</code>.
+        It is designed for screening installation concepts and should be calibrated with bench data before
+        being used for claims about absolute accuracy.
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
