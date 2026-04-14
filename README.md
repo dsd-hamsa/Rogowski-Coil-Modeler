@@ -1,4 +1,4 @@
-# Rogowski-Coil-Modeler
+# Rogowski Coil Modeler
 
 This is a self-contained browser app for studying how Rogowski coil installation geometry can create current measurement error, then comparing installation methods with Monte Carlo simulation.
 
@@ -31,7 +31,7 @@ This is intended for concept screening and method comparison, not as a final phy
 Because the app uses JavaScript modules, serve it from a local web server:
 
 ```powershell
-cd C:\Dev\Rogowski
+cd C:\Downloads\Rogowski-Coil-Modeler
 python -m http.server 8000
 ```
 
